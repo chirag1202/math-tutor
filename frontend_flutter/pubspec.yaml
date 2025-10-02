@@ -1,0 +1,19 @@
+name: maths_tutor
+version: 0.1.0
+publish_to: "none"
+description: AI-powered math learning app
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  supabase_flutter: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
