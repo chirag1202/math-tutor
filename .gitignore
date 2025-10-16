@@ -24,6 +24,8 @@ Pods/
 # Python venv
 venv/
 .env
+__pycache__/
+*.pyc
 
 # Mac/Windows files
 .DS_Store

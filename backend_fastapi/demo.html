@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathsTutor API Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .endpoint {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint h2 {
+            color: #2196F3;
+            margin-top: 0;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .response {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #2196F3;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎓 MathsTutor API Demo</h1>
+    
+    <div class="endpoint">
+        <h2>GET / - Health Check</h2>
+        <p>Test if the API is running</p>
+        <button onclick="testRoot()">Test Endpoint</button>
+        <div id="rootResponse" class="response" style="display: none;"></div>
+    </div>
+
+    <div class="endpoint">
+        <h2>GET /openapi.json - API Documentation</h2>
+        <p>View the OpenAPI specification</p>
+        <button onclick="testOpenAPI()">Get OpenAPI Spec</button>
+        <div id="openAPIResponse" class="response" style="display: none;"></div>
+    </div>
+
+    <div class="endpoint">
+        <h2>POST /register - User Registration</h2>
+        <p>Register a new user in the system</p>
+        <form onsubmit="registerUser(event)">
+            <label>Email:</label>
+            <input type="email" id="email" required placeholder="user@example.com">
+            
+            <label>Full Name:</label>
+            <input type="text" id="fullName" required placeholder="John Doe">
+            
+            <label>Role:</label>
+            <input type="text" id="role" value="student" required>
+            
+            <label>Password:</label>
+            <input type="password" id="password" required placeholder="********">
+            
+            <button type="submit" style="margin-top: 15px;">Register User</button>
+        </form>
+        <div id="registerResponse" class="response" style="display: none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+
+        async function testRoot() {
+            try {
+                const response = await fetch(`${API_URL}/`);
+                const data = await response.json();
+                displayResponse('rootResponse', data);
+            } catch (error) {
+                displayResponse('rootResponse', { error: error.message });
+            }
+        }
+
+        async function testOpenAPI() {
+            try {
+                const response = await fetch(`${API_URL}/openapi.json`);
+                const data = await response.json();
+                displayResponse('openAPIResponse', data);
+            } catch (error) {
+                displayResponse('openAPIResponse', { error: error.message });
+            }
+        }
+
+        async function registerUser(event) {
+            event.preventDefault();
+            
+            const userData = {
+                email: document.getElementById('email').value,
+                full_name: document.getElementById('fullName').value,
+                role: document.getElementById('role').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                displayResponse('registerResponse', data);
+            } catch (error) {
+                displayResponse('registerResponse', { error: error.message });
+            }
+        }
+
+        function displayResponse(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
