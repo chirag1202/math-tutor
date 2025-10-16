@@ -4,6 +4,6 @@ def generate_questions(topic: str):
         "topic": topic,
         "questions": [
             {"question": f"What is 2 + 2 in {topic}?", "answer": "4"},
-            {"question": f"What is 3 x 3 in {topic}?", "answer": "9"}
-        ]
+            {"question": f"What is 3 x 3 in {topic}?", "answer": "9"},
+        ],
     }

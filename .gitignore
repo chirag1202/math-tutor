@@ -24,6 +24,11 @@ Pods/
 # Python venv
 venv/
 .env
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
 
 # Mac/Windows files
 .DS_Store

@@ -1,14 +1,16 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from pydantic import BaseModel
 from ..db.supabase_client import sign_up_user
 
 router = APIRouter()
+
 
 class UserProfile(BaseModel):
     email: str
     full_name: str
     role: str
     password: str
+
 
 @router.post("/register")
 def register_user(profile: UserProfile):
@@ -17,6 +19,6 @@ def register_user(profile: UserProfile):
         email=profile.email,
         password=profile.password,
         full_name=profile.full_name,
-        role=profile.role
+        role=profile.role,
     )
     return result

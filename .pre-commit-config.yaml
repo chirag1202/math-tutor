@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+        files: ^backend_fastapi/
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.9
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        files: ^backend_fastapi/
+
+  - repo: https://github.com/dart-lang/dart_pre_commit_hooks
+    rev: v1.0.0
+    hooks:
+      - id: dart-format
+        files: ^frontend_flutter/

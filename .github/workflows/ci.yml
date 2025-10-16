@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  python-lint-test:
+    name: Python Lint and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd backend_fastapi
+        pip install -r requirements.txt
+        pip install black ruff
+    
+    - name: Lint with black
+      run: |
+        cd backend_fastapi
+        black --check .
+    
+    - name: Lint with ruff
+      run: |
+        cd backend_fastapi
+        ruff check .
+    
+    - name: Run tests with pytest
+      run: |
+        cd backend_fastapi
+        pytest
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+
+  flutter-analyze-test:
+    name: Flutter Analyze and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.x'
+        channel: 'stable'
+    
+    - name: Install dependencies
+      run: |
+        cd frontend_flutter
+        flutter pub get
+    
+    - name: Analyze code
+      run: |
+        cd frontend_flutter
+        flutter analyze
+    
+    - name: Run tests
+      run: |
+        cd frontend_flutter
+        flutter test
