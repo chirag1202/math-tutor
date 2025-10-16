@@ -77,8 +77,9 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned(
@@ -87,7 +88,7 @@ class _AuthPageState extends State<AuthPage> {
             child: Image.asset(
               'assets/AI_Tutor.png',
               height: 200,
-              color: Colors.deepPurple.withOpacity(0.1),
+              color: theme.colorScheme.primary.withOpacity(0.1),
             ),
           ),
           Positioned(
@@ -96,7 +97,7 @@ class _AuthPageState extends State<AuthPage> {
             child: Image.asset(
               'assets/AI_Tutor.png',
               height: 160,
-              color: Colors.orange.withOpacity(0.1),
+              color: theme.colorScheme.secondary.withOpacity(0.1),
             ),
           ),
           Center(
@@ -106,11 +107,11 @@ class _AuthPageState extends State<AuthPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
+                  color: theme.colorScheme.surface.withOpacity(0.95),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.deepPurple.withOpacity(0.08),
+                      color: theme.colorScheme.primary.withOpacity(0.15),
                       blurRadius: 24,
                       offset: const Offset(0, 8),
                     ),
@@ -126,10 +127,8 @@ class _AuthPageState extends State<AuthPage> {
                     const SizedBox(height: 16),
                     Text(
                       _isSignUp ? 'Create Account' : 'Sign In',
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -137,10 +136,7 @@ class _AuthPageState extends State<AuthPage> {
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
-                        prefixIcon: const Icon(Icons.email),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        prefixIcon: Icon(Icons.email, color: theme.colorScheme.primary),
                       ),
                       keyboardType: TextInputType.emailAddress,
                     ),
@@ -149,10 +145,7 @@ class _AuthPageState extends State<AuthPage> {
                       controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: const Icon(Icons.lock),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        prefixIcon: Icon(Icons.lock, color: theme.colorScheme.primary),
                       ),
                       obscureText: true,
                     ),
@@ -162,20 +155,14 @@ class _AuthPageState extends State<AuthPage> {
                         controller: _fullNameController,
                         decoration: InputDecoration(
                           labelText: 'Full Name',
-                          prefixIcon: const Icon(Icons.person),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                          prefixIcon: Icon(Icons.person, color: theme.colorScheme.primary),
                         ),
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField<String>(
                         initialValue: _selectedBoard,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Board',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
                         ),
                         items: ['ICSE', 'CBSE', 'SSC']
                             .map((board) => DropdownMenuItem(
@@ -192,11 +179,8 @@ class _AuthPageState extends State<AuthPage> {
                       const SizedBox(height: 16),
                       DropdownButtonFormField<int>(
                         initialValue: _selectedStandard,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Standard',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
                         ),
                         items: List.generate(6, (i) => i + 4)
                             .map((std) => DropdownMenuItem(
@@ -213,27 +197,22 @@ class _AuthPageState extends State<AuthPage> {
                     ],
                     const SizedBox(height: 24),
                     if (_error != null)
-                      Text(_error!, style: const TextStyle(color: Colors.red)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Text(
+                          _error!,
+                          style: TextStyle(color: theme.colorScheme.error),
+                        ),
+                      ),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              _isSignUp ? Colors.orange : Colors.deepPurple,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 4,
-                        ),
                         onPressed: _loading ? null : _authenticate,
                         child: _loading
                             ? const CircularProgressIndicator(
                                 color: Colors.white)
                             : Text(
                                 _isSignUp ? 'Sign Up' : 'Sign In',
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.white),
                               ),
                       ),
                     ),
@@ -245,7 +224,7 @@ class _AuthPageState extends State<AuthPage> {
                         _isSignUp
                             ? 'Already have an account? Sign In'
                             : 'Don\'t have an account? Sign Up',
-                        style: const TextStyle(color: Colors.deepPurple),
+                        style: TextStyle(color: theme.colorScheme.primary),
                       ),
                     ),
                   ],
